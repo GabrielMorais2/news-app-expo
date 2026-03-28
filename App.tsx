@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
-import News from './src/components/News';
+import { StyleSheet, Text, View, ScrollView, SafeAreaView, ActivityIndicator, Image, TouchableOpacity, Button } from 'react-native';
 
 import { fetchNewsService, NewsData } from './src/utils/handle-api';
+import NewsList from './src/components/NewsList';
 
 export default function App() {
   const [newsList, setNewsList] = useState<NewsData[]>([]);
@@ -29,9 +29,19 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
-      
+
+
       <View style={styles.header}>
+
+        <Text style={styles.countLista}>Quantidade de noticias: {newsList.length}</Text>
+        
+      <Image style={styles.image} source={require('./tasks/images/newspaper-banner.png')} />
         <Text style={styles.headerTitle}>Últimas notícias</Text>
+
+        <TouchableOpacity style={styles.button} onPress={fetchNews}>
+        Atualizar Lista
+       </TouchableOpacity>
+
       </View>
 
       {loading ? (
@@ -44,17 +54,9 @@ export default function App() {
           <Text style={styles.errorText}>Erro: {error}</Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          {newsList.map((item) => (
-            <News
-              key={item.id.toString()}
-              title={item.title}
-              image={item.image}
-              published={item.published}
-              link={item.link}
-            />
-          ))}
-        </ScrollView>
+
+      <NewsList item={newsList} />
+      
       )}
     </SafeAreaView>
   );
@@ -87,11 +89,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
+  countLista: {
+    justifyContent: 'flex-start',
+    color: '#666',
+    fontSize: 16,
+  },
   errorText: {
     color: 'red',
     fontSize: 16,
   },
   scrollContent: {
     padding: 16,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  button: {
+    padding: 16,
+    backgroundColor: '#0921',
+    borderRadius: 10,
+    alignItems: 'center'
   },
 });

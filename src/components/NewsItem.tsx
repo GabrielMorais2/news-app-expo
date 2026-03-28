@@ -8,7 +8,7 @@ interface NewsProps {
   link: string;
 }
 
-export default function News({ title, image, published, link }: NewsProps) {
+export default function NewsItem({ title, image, published, link }: NewsProps) {
   const handlePress = async () => {
     try {
       const supported = await Linking.canOpenURL(link);
